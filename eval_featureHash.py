@@ -111,7 +111,7 @@ def help():
     print '将文件夹内的指定格式的图片文件进行FeatureHash测试'
     print ''
     print '必选参数.'
-    print '-f 指定图片所在文件夹路径'
+    print '-f 指定图片所在文件夹路径，必须使用tidy_image进行格式处理'
     print '-m 指定三个npy文件所在路径'
     print ''
     print '可选参数.'
