@@ -62,4 +62,6 @@ if __name__ == '__main__':
         help()
         print '必须使用-s指定图片保存路径'
     else:
+        base_path = file_tools.check_folder_name(base_path)
+        save_path = file_tools.check_folder_name(save_path)
         file_tools.traverse_floder(base_folder=base_path, check_file_format=na_format, dothing_func=change_format)

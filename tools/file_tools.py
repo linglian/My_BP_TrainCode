@@ -105,3 +105,10 @@ def check_fold(name):
         if not os.path.exists(getFloderOfFileJustPath(name)):
             check_fold(getFloderOfFileJustPath(name))
         os.mkdir(name)
+
+"""设置路径为标准文件路径
+"""
+
+def check_folder_name(name):
+    if not name.endswith('/'):
+        return name + '/'
