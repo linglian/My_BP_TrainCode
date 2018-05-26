@@ -28,6 +28,17 @@ def copy_file(srcfile,dstfile):
         shutil.copyfile(srcfile,dstfile)      #复制文件
 
 
+"""获取文件的父路径
+path: 完整的文件路径
+index: 返回第几级父文件夹
+
+Returns:
+    str -- 返回父文件夹文字
+"""
+
+def getFloderOfFile(path, index=1):
+    return path.split('/')[-1 - index]
+
 """获取文件名
 path: 完整的文件路径
 
@@ -37,21 +48,19 @@ Returns:
 
 def getFileName(path):
     try:
-        return path.split('/')[-1];
+        return getFloderOfFile(path, 0);
     except Exception as msg:
         raise ValueError('Bad Path', path)
 
-"""获取文件的父路径
+"""获取文件的路径(不包含文件名)
 path: 完整的文件路径
-index: 返回第几级父文件夹
 
 Returns:
-    str -- 返回父文件夹文字
+    str -- 返回文件的路径(不包含文件名)
 """
 
-
-def getFloderOfFile(path, index=1):
-    return path.split('/')[-1 - index]
+def getFloderOfFileJustPath(path):
+    return path[:path.index(getFileName(path))]
 
 """遍历所有文件夹，并且对每个符合格式的文件运行函数
 base_folder: 根路径
@@ -82,3 +91,17 @@ def traverse_floder(base_folder, dothing_func, check_file_format='jpg', is_log=T
     # 递归遍历所有文件夹
     for floder in floders_list:
         traverse_floder(os.path.join(base_folder, floder), dothing_func, check_file_format)
+
+
+"""创建文件夹（如果文件夹不存在的话）
+"""
+
+def check_fold(name):
+    import os
+    if name.endswith('/'):
+        name = name[:-1]
+    print name
+    if not os.path.exists(name):
+        if not os.path.exists(getFloderOfFileJustPath(name)):
+            check_fold(getFloderOfFileJustPath(name))
+        os.mkdir(name)
