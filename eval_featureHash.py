@@ -80,6 +80,7 @@ def eval_featureHash(base_path, model_path, k = [1, 5, 10], image_format='.webp'
         all_bad_list = []
         if isinstance(k, int):
             k = [k]
+            
         for tk in k:
             num = 0
             now_num = 0
