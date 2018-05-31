@@ -61,7 +61,7 @@ if __name__ == '__main__':
     opts, args = getopt.getopt(sys.argv[1:], 'f:l:t:h')
 
     path = None
-    check_file_format = 'webp'
+    check_file_format = 'jpg'
 
     
     for op, value in opts:
