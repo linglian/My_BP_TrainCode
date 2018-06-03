@@ -1,6 +1,7 @@
 #coding=utf-8
 import cv2
 import sys
+import os
 
 from tools import file_tools
 from PIL import Image
@@ -15,8 +16,9 @@ def change_format(image_path):
     img = cv2.imread(image_path)
     image_path = image_path.replace(base_path, save_path)
     image_path = image_path.replace(na_format, af_format)
-    file_tools.check_fold(file_tools.getFloderOfFileJustPath(image_path))
-    cv2.imwrite(image_path, img)
+    if os.path.exists(image_path) is False：
+        file_tools.check_fold(file_tools.getFloderOfFileJustPath(image_path))
+        cv2.imwrite(image_path, img)
     print image_path
 
 def help():
