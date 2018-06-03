@@ -16,7 +16,7 @@ def change_format(image_path):
     img = cv2.imread(image_path)
     image_path = image_path.replace(base_path, save_path)
     image_path = image_path.replace(na_format, af_format)
-    if os.path.exists(image_path) is False：
+    if os.path.exists(image_path) is False:
         file_tools.check_fold(file_tools.getFloderOfFileJustPath(image_path))
         cv2.imwrite(image_path, img)
     print image_path
