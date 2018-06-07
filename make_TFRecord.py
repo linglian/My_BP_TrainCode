@@ -49,7 +49,8 @@ def make_TFRecord(list_file_path, tfrecord_file_path=None):
                     tfrecord_writer.write(example.SerializeToString())
                     num = num + 1
                     if num % 1000 == 0:
-                        print('Finish %d/%d(%.2f/sec)' % (num, max_num, float(1000) / (time.time() - last_time)))
+                        spend_time = float(1000) / (time.time() - last_time)
+                        print('Finish %d/%d(%.2f/sec)........%.2f' % (num, max_num, spend_time, max_num / spend_time))
                         last_time = time.time()
                         # 防止每个tfrecord太大，进行分割
                         tfrecord_writer.close()
