@@ -16,7 +16,7 @@ def let_do_it(file_path):
     if os.path.exists(os.path.join(save_floder_path, class_name)):
         file_list = os.listdir(os.path.join(save_floder_path, class_name))
     file_tools.copy_file(file_path, os.path.join(save_floder_path, class_name, str(len(file_list)) + file_format))
-    # print os.path.join(save_floder_path, class_name, file_name)
+    #print os.path.join(save_floder_path, class_name, file_name)
     
 def help():
     print '用法: -f [图片路径] [选项]... [选项]...'
@@ -28,7 +28,7 @@ def help():
     print '-s 存储路径'
     print ''
     print '可选参数.'
-    print '-t 指定图片格式，默认为jpg'
+    print '-t 指定图片格式，默认为.jpg'
     print ''
 
 if __name__ == '__main__':

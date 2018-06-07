@@ -26,7 +26,7 @@ echo -e "\033[47;31m                                                    \033[0m"
 python ./use_mxnet_get_feature.py -f $TIDY_AUG_IMAGE_PATH
 
 echo -e "\033[47;31m                                                    \033[0m" 
-echo -e "\033[47;31m               开始进行[提取特征]                   \033[0m" 
+echo -e "\033[47;31m               开始进行[提取测试]                   \033[0m" 
 echo -e "\033[47;31m                                                    \033[0m" 
 
 python ./eval_featureHash.py -f $ORIGN_IMAGE_PATH -m $TIDY_AUG_IMAGE_PATH

@@ -6,6 +6,7 @@ import numpy as np
 import os
 import sys
 import getopt
+import time
 
 # 数据增强区
 is_rotate = False
@@ -15,6 +16,11 @@ image_format = '.webp'
 
 mainFold = None
 toFold = None
+
+now_number = 0
+image_number = 0
+last_number = 0
+last_time = time.time()
 
 """创建文件夹（如果文件夹不存在的话）
 """
@@ -92,6 +98,7 @@ def getImage(img):
     return img
 
 def splite_img(imgfile):
+    global now_number
     import random
     try:
         newname = imgfile.replace('.', '_{:03d}.'.format(0))
@@ -106,12 +113,14 @@ def splite_img(imgfile):
             newname = imgfile.replace('.', '_{:03d}.'.format(idx))
             newname = newname.replace(mainFold, toFold)
             cv2.imwrite(newname[0: newname.find('.')] + '.jpg', im)
+        now_number += 1
     except Exception as msg:
         print('Bad Image: %s B %s ' % (imgfile, msg))
         return None
  
 def start_splite(path, filePath, toPath):
-    print('Create Fold %s ' % os.path.join(toPath, filePath));
+    global now_number, image_number, last_number, last_time
+    # print('Create Fold %s ' % os.path.join(toPath, filePath));
     
     check_fold(os.path.join(toPath, filePath));
     folders = [folder for folder in os.listdir(
@@ -120,7 +129,7 @@ def start_splite(path, filePath, toPath):
     folders2 = [folder for folder in os.listdir(
         os.path.join(path, filePath)) if folder.endswith(image_format)]
 
-    print(folders2)
+    # print(folders2)
 
     for folder in folders2:
         # print('Splite Image %s ' % os.path.join(toPath, filePath, folder));
@@ -128,6 +137,27 @@ def start_splite(path, filePath, toPath):
 
     for folder in folders:
         start_splite(os.path.join(path, filePath), folder, os.path.join(toPath, filePath))
+    
+    if now_number != 0:
+        print '正在进行DataAugmentation(%d/%d)---%.2f张/sec' % (now_number, image_number, (float(now_number - last_number) / (time.time() - last_time)))
+        last_number = now_number
+        last_time = time.time()
+
+def get_image_number(path, filePath, toPath):
+    global image_number
+    
+    check_fold(os.path.join(toPath, filePath));
+    folders = [folder for folder in os.listdir(
+        os.path.join(path, filePath)) if os.path.isdir(os.path.join(path, filePath, folder))]
+
+    folders2 = [folder for folder in os.listdir(
+        os.path.join(path, filePath)) if folder.endswith(image_format)]
+
+    for folder in folders2:
+        image_number += 1
+
+    for folder in folders:
+        get_image_number(os.path.join(path, filePath), folder, os.path.join(toPath, filePath))
 
 
 def help():
@@ -175,4 +205,9 @@ if __name__ == "__main__":
         help()
         print'必选使用-s 指定图片存储路径'
     else:
-        start_splite(mainFold, '', toFold);
+        if mainFold.endswith('/') and toFold.endswith('/'):
+            get_image_number(mainFold, '', toFold)
+            start_splite(mainFold, '', toFold)
+        else:
+            help()
+            print'路径必须是文件夹路径，以 / 为结尾'
