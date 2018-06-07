@@ -2,6 +2,7 @@
 
 from tools import file_tools
 import sys
+import time
 
 def make_TFRecord(list_file_path, tfrecord_file_path=None):
     from datasets import dataset_utils
@@ -23,6 +24,7 @@ def make_TFRecord(list_file_path, tfrecord_file_path=None):
 
     tfrecord_writer = tf.python_io.TFRecordWriter(tfrecord_file_path)
 
+    last_time = time.time()
     with tf.Graph().as_default():
         # 读取格式信息
         decode_jpeg_data = tf.placeholder(dtype=tf.string)
@@ -47,7 +49,7 @@ def make_TFRecord(list_file_path, tfrecord_file_path=None):
                     tfrecord_writer.write(example.SerializeToString())
                     num = num + 1
                     if num % 1000 == 0:
-                        print('Finish %d/%d' % (num, max_num))
+                        print('Finish %d/%d(%.2f/sec)' % (num, max_num, float(1000) / (time.time() - last_time)))
                         # 防止每个tfrecord太大，进行分割
                         tfrecord_writer.close()
                         tfrecord_writer = tf.python_io.TFRecordWriter(tfrecord_file_path.replace('.', '_%d.' % int(num / 1000)))
