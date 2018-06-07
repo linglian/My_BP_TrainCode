@@ -100,7 +100,7 @@ def check_fold(name):
     import os
     if name.endswith('/'):
         name = name[:-1]
-    print name
+    #print name
     if not os.path.exists(name):
         if not os.path.exists(getFloderOfFileJustPath(name)):
             check_fold(getFloderOfFileJustPath(name))

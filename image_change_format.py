@@ -6,20 +6,39 @@ import os
 from tools import file_tools
 from PIL import Image
 import imutils
+import time
 
 base_path = None
 save_path = None
 na_format = '.webp'
 af_format = '.jpg'
+is_change_size = True
+
+image_sum = 0
+now_number = 0
+last_number = 0
+last_time = time.time()
 
 def change_format(image_path):
-    img = cv2.imread(image_path)
+    global image_sum, now_number, last_time, last_number
+    nature_image_path = image_path
     image_path = image_path.replace(base_path, save_path)
     image_path = image_path.replace(na_format, af_format)
     if os.path.exists(image_path) is False:
         file_tools.check_fold(file_tools.getFloderOfFileJustPath(image_path))
+        img = cv2.imread(nature_image_path)
+        if is_change_size:
+            img = cv2.resize(img, (224, 224))
         cv2.imwrite(image_path, img)
-    print image_path
+    now_number += 1
+    if now_number % 100 == 0:
+        print '正在进行转换...%d/%d(%.2f/sec)' % (now_number, image_sum, (float(now_number - last_number) / (time.time() - last_time)))
+        last_number = now_number
+        last_time = time.time()
+
+def get_sum(image_path):
+    global image_sum
+    image_sum += 1
 
 def help():
     print '用法: -f [图片路径] -s [保存路径] [选项]... [选项]...'
@@ -66,4 +85,5 @@ if __name__ == '__main__':
     else:
         base_path = file_tools.check_folder_name(base_path)
         save_path = file_tools.check_folder_name(save_path)
+        file_tools.traverse_floder(base_folder=base_path, check_file_format=na_format, dothing_func=get_sum)
         file_tools.traverse_floder(base_folder=base_path, check_file_format=na_format, dothing_func=change_format)

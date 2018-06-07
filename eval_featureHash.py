@@ -20,6 +20,8 @@ from tensorflow.python.summary import summary
 import numpy as np
 import falconn
 import random
+import imutils
+import cv2
 
 checkpoint = tf.train.get_checkpoint_state('/home/lol/DeepLearn/Tensorflow-Ipynb/logs/')
 
@@ -44,27 +46,21 @@ sess = tf.Session()
 
 saver.restore(sess, input_checkpoint)
     
+image_preprocessing_fn = preprocessing_factory.get_preprocessing('resnet_v1_50', is_training=False)
+
 def find_k_FeatureHash(model_path, image_file_path, k):
     global is_need_init_find_k_FeatureHash
     global falconn_query, mxnet_feature_extractor
     global my_feature, my_class_name, my_file_path
     
     def getFeature(image_filepath):
-        import cv2
-        import numpy as np
 
-        img = cv2.imread(image_filepath)
-        
-        img = cv2.resize(img, (224, 224))
-        
-        cv2.imwrite('/tmp/tmp.jpg', img)
-        
-        image_raw_data = tf.gfile.FastGFile('/tmp/tmp.jpg').read()  
-        
-        image = tf.image.decode_jpeg(image_raw_data) #图片解码
+        image = imutils.opencv2matplotlib(cv2.imread(image_filepath))
+
+        image = image_preprocessing_fn(image, 224, 224)
         
         image = image.eval(session=sess)
-        
+
         result_feature = sess.run("resnet_v1_50/pool5:0", feed_dict={'input:0': [image]})
 
         return np.ravel(result_feature)
