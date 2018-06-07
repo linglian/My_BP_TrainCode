@@ -50,6 +50,7 @@ def make_TFRecord(list_file_path, tfrecord_file_path=None):
                     num = num + 1
                     if num % 1000 == 0:
                         print('Finish %d/%d(%.2f/sec)' % (num, max_num, float(1000) / (time.time() - last_time)))
+                        last_time = time.time()
                         # 防止每个tfrecord太大，进行分割
                         tfrecord_writer.close()
                         tfrecord_writer = tf.python_io.TFRecordWriter(tfrecord_file_path.replace('.', '_%d.' % int(num / 1000)))
