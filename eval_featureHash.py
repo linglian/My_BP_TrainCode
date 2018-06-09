@@ -123,13 +123,13 @@ def eval_featureHash(base_path, model_path, k = [1, 5, 10], image_format='.webp'
             tic = 0
             my_sum = 0
 
-            for class_name_and_path in class_name_and_path_list[:100]:
+            for class_name_and_path in class_name_and_path_list:
                 image_path_list = [os.path.join(class_name_and_path[1], image_file) for image_file in os.listdir(class_name_and_path[1]) if image_file.endswith(image_format)]
                 my_sum = my_sum + len(image_path_list)
             
             print '一共要检测{}个图片'.format(my_sum)
 
-            for class_name_and_path in class_name_and_path_list[:100]:
+            for class_name_and_path in class_name_and_path_list:
 
                 image_path_list = [os.path.join(class_name_and_path[1], image_file) for image_file in os.listdir(class_name_and_path[1]) if image_file.endswith(image_format)]
                 class_name = class_name_and_path[0]
@@ -147,9 +147,10 @@ def eval_featureHash(base_path, model_path, k = [1, 5, 10], image_format='.webp'
                         if is_find is False:
                             bad_list.append(image_path)
                 tic += 1
-            if tic % 1 == 0:
+            if tic % 100 == 0:
                 print 'Rank=%d时的正确率为%.02f(%d/%d)' % (tk, float(num) / now_num, num, my_sum)
             all_bad_list.append(bad_list)
+        print 'Rank=%d时的正确率为%.02f(%d/%d)' % (tk, float(num) / now_num, num, my_sum)
         return all_bad_list
     for idx, b_p in enumerate(base_path):
         print '开始进行   {}   检测'.format(b_p)
@@ -203,4 +204,5 @@ if __name__ == '__main__':
         print '必须使用 -f 指定图片路径'
     else:
         eval_featureHash(base_path, model_path, rank, image_format)
+
 
