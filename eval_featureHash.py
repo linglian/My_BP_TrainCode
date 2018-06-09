@@ -48,6 +48,10 @@ saver.restore(sess, input_checkpoint)
     
 image_preprocessing_fn = preprocessing_factory.get_preprocessing('resnet_v1_50', is_training=False)
 
+img_pla = tf.placeholder(dtype=tf.float32, shape=[None, None, 3], name='img')
+
+image_preprocessing = image_preprocessing_fn(img_pla, 224, 224)
+
 def find_k_FeatureHash(model_path, image_file_path, k):
     global is_need_init_find_k_FeatureHash
     global falconn_query, mxnet_feature_extractor
@@ -55,15 +59,17 @@ def find_k_FeatureHash(model_path, image_file_path, k):
     
     def getFeature(image_filepath):
 
-        image = imutils.opencv2matplotlib(cv2.imread(image_filepath))
+        img = cv2.imread(image_filepath)
+        if img is not None:
+            image = imutils.opencv2matplotlib(img)
 
-        image = image_preprocessing_fn(image, 224, 224)
-        
-        image = image.eval(session=sess)
+            image = sess.run(image_preprocessing, feed_dict={'img:0': image})
 
-        result_feature = sess.run("resnet_v1_50/pool5:0", feed_dict={'input:0': [image]})
+            result_feature = sess.run("resnet_v1_50/pool5:0", feed_dict={'input:0': [image]})
 
-        return np.ravel(result_feature)
+            return np.ravel(result_feature)
+        else:
+            return None
     
     if is_need_init_find_k_FeatureHash:
         print '正在进行初始化...'
@@ -71,8 +77,11 @@ def find_k_FeatureHash(model_path, image_file_path, k):
             dim = 2048
             # 获得数组
             my_feature = np.load(os.path.join(model_path, 'tensorflow-feature.npy'))
+            print my_feature.shape
             my_class_name = np.load(os.path.join(model_path, 'tensorflow-class_name.npy'))
+            print my_class_name.shape
             my_file_path = np.load(os.path.join(model_path, 'tensorflow-file_path.npy'))
+            print my_file_path.shape
             # 获取数组数量
             trainNum=len(my_feature)
             # 获得默认参数
@@ -87,13 +96,18 @@ def find_k_FeatureHash(model_path, image_file_path, k):
         is_need_init_find_k_FeatureHash = False
         print '初始化结束...'
     featrue = getFeature(image_file_path)
-    find_list = falconn_query.find_k_nearest_neighbors(query=featrue, k=k)
-    class_name_list = my_class_name[find_list]
-    file_path_list = my_file_path[find_list]
-    return class_name_list, file_path_list
+    if featrue is not None:
+        find_list = falconn_query.find_k_nearest_neighbors(query=featrue, k=k)
+        class_name_list = my_class_name[find_list]
+        file_path_list = my_file_path[find_list]
+        return class_name_list, file_path_list
+    else:
+        return None, None
 
 def eval_featureHash(base_path, model_path, k = [1, 5, 10], image_format='.webp'):
-    def test_featureHash(bashpath, model_path, k, image_format):
+    if isinstance(base_path, str):
+        base_path = [base_path]
+    def test_featureHash(base_path, model_path, k, image_format):
 
         class_name_and_path_list = [[floder, os.path.join(base_path, floder)] for floder in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, floder))]
 
@@ -106,36 +120,41 @@ def eval_featureHash(base_path, model_path, k = [1, 5, 10], image_format='.webp'
             now_num = 0
             bad_list = []
             random.shuffle(class_name_and_path_list)
-            
+            tic = 0
             my_sum = 0
 
-            for class_name_and_path in class_name_and_path_list[:50]:
+            for class_name_and_path in class_name_and_path_list[:100]:
                 image_path_list = [os.path.join(class_name_and_path[1], image_file) for image_file in os.listdir(class_name_and_path[1]) if image_file.endswith(image_format)]
                 my_sum = my_sum + len(image_path_list)
             
             print '一共要检测{}个图片'.format(my_sum)
 
-            for class_name_and_path in class_name_and_path_list[:50]:
+            for class_name_and_path in class_name_and_path_list[:100]:
 
                 image_path_list = [os.path.join(class_name_and_path[1], image_file) for image_file in os.listdir(class_name_and_path[1]) if image_file.endswith(image_format)]
                 class_name = class_name_and_path[0]
                 for image_path in image_path_list:
                     c, f = find_k_FeatureHash(model_path, image_file_path=image_path, k=tk)
-                    is_find = False
-                    now_num = now_num + 1
-                    for tc in c:
-                        if tc == class_name:
-                            num = num + 1
-                            is_find = True
-                            break
-                    if is_find is False:
-                        bad_list.append(image_path)
-
+                    if c is not None:
+                        is_find = False
+                        now_num = now_num + 1
+                        for tc in c:
+                            #print tc, class_name
+                            if str(tc) == str(class_name):
+                                num = num + 1
+                                is_find = True
+                                break
+                        if is_find is False:
+                            bad_list.append(image_path)
+                tic += 1
+            if tic % 1 == 0:
                 print 'Rank=%d时的正确率为%.02f(%d/%d)' % (tk, float(num) / now_num, num, my_sum)
             all_bad_list.append(bad_list)
         return all_bad_list
-    all_bad_list = test_featureHash(base_path, model_path, k, image_format)
-    np.save('./all_bad_list.npy', all_bad_list)
+    for idx, b_p in enumerate(base_path):
+        print '开始进行   {}   检测'.format(b_p)
+        all_bad_list = test_featureHash(b_p, model_path, k, image_format)
+        np.save('./all_bad_list_{}.npy'.format(idx), all_bad_list)
 
 
 def help():
@@ -149,7 +168,7 @@ def help():
     print ''
     print '可选参数.'
     print '-r 指定Rank 默认为[1, 5, 10]'
-    print '-t 指定图片格式'
+    print '-t 指定图片格式, 默认为.webp'
     print ''
 
 if __name__ == '__main__':
@@ -166,7 +185,7 @@ if __name__ == '__main__':
 
     for op, value in opts:
         if op == '-f':
-            base_path = value
+            base_path = value.split(',')
         elif op == '-m':
             model_path = value
         elif op == '-r':

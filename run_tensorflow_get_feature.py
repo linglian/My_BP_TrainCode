@@ -27,6 +27,7 @@ import imutils
 
 def use_tensorflow_get_feature(base_path):
     
+    
     checkpoint = tf.train.get_checkpoint_state('/home/lol/DeepLearn/Tensorflow-Ipynb/logs/')
 
     input_checkpoint = checkpoint.model_checkpoint_path
@@ -46,6 +47,10 @@ def use_tensorflow_get_feature(base_path):
         
     image_preprocessing_fn = preprocessing_factory.get_preprocessing('resnet_v1_50', is_training=False)
 
+    img_pla = tf.placeholder(dtype=tf.float32, shape=[None, None, 3], name='img')
+
+    image_preprocessing = image_preprocessing_fn(img_pla, 224, 224)
+
     def format_feature(class_name, feature, image_filepath):
         return [feature, class_name, image_filepath]
 
@@ -60,20 +65,35 @@ def use_tensorflow_get_feature(base_path):
     last_num = 0
     last_time = time.time()
     for class_name_and_path in class_name_and_path_list:
-        if os.path.exists(os.path.join(class_name_and_path[1], 'tensorflow-resnet-50_feature.npy')):
-            continue
         image_path_list = [os.path.join(class_name_and_path[1], image_file) for image_file in os.listdir(class_name_and_path[1]) if image_file.endswith('.jpg')]
+        
+        #if os.path.exists(os.path.join(class_name_and_path[1], 'tensorflow-resnet-50_feature.npy')):
+        #    now_num = now_num + len(image_path_list)
+        #    continue
+
         feature_list = []
+        all_image_list = []
         image_list = []
         for image_path in image_path_list:
             image = imutils.opencv2matplotlib(cv2.imread(image_path))
-            image_list.append(image_preprocessing_fn(image, 224, 224))
+            image_list.append(sess.run(image_preprocessing, feed_dict={'img:0': image}))
+            if len(image_list) > 63:
+                all_image_list.append(image_list)
+                image_list = []
         
-        image_list = sess.run(image_list)
+        all_image_list.append(image_list)
 
-        result_feature = sess.run("resnet_v1_50/pool5:0", feed_dict={'input:0': image_list})
+        result_list = []
+        #print len(image_path_list)
+        for image_list in all_image_list:
+            temp = sess.run("resnet_v1_50/pool5:0", feed_dict={'input:0': image_list})
+            for j in temp:
+                result_list.append(np.ravel(j))
 
-        for idx, featrue in enumerate(result_feature):
+        print len(result_list)
+        for idx, featrue in enumerate(result_list):
+            #print format_feature(feature=featrue,
+            #                                class_name=class_name_and_path[0], image_filepath=image_path_list[idx])
             feature_list.append(format_feature(feature=featrue,
                                             class_name=class_name_and_path[0], image_filepath=image_path_list[idx]))
         now_num = now_num + len(image_path_list)

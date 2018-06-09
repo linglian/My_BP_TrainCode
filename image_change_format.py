@@ -27,9 +27,14 @@ def change_format(image_path):
     if os.path.exists(image_path) is False:
         file_tools.check_fold(file_tools.getFloderOfFileJustPath(image_path))
         img = cv2.imread(nature_image_path)
-        if is_change_size:
-            img = cv2.resize(img, (224, 224))
-        cv2.imwrite(image_path, img)
+        if img is not None:
+            img = Image.fromarray(imutils.opencv2matplotlib(img))
+            img.save(image_path)
+        else:
+            if os.path.exists(nature_image_path) is False:
+                print '无法读取webp文件(文件不存在)...%s' % nature_image_path
+            else:
+                print '无法读取webp文件...%s' % nature_image_path
     now_number += 1
     if now_number % 100 == 0:
         print '正在进行转换...%d/%d(%.2f/sec)' % (now_number, image_sum, (float(now_number - last_number) / (time.time() - last_time)))
