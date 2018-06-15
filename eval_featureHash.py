@@ -105,17 +105,18 @@ def find_k_FeatureHash(model_path, image_file_path, k):
         return None, None
 
 def eval_featureHash(base_path, model_path, k = [1, 5, 10], image_format='.webp'):
+    if isinstance(k, int):
+        k = [k]
+    right_sum = np.zeros(len(k))
+    all_sum = np.zeros(len(k))
     if isinstance(base_path, str):
         base_path = [base_path]
     def test_featureHash(base_path, model_path, k, image_format):
-
         class_name_and_path_list = [[floder, os.path.join(base_path, floder)] for floder in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, floder))]
 
         all_bad_list = []
-        if isinstance(k, int):
-            k = [k]
-            
-        for tk in k:
+
+        for t_idx, tk in enumerate(k):
             num = 0
             now_num = 0
             bad_list = []
@@ -128,7 +129,7 @@ def eval_featureHash(base_path, model_path, k = [1, 5, 10], image_format='.webp'
                 my_sum = my_sum + len(image_path_list)
             
             print '一共要检测{}个图片'.format(my_sum)
-
+            all_sum[t_idx] += int(my_sum)
             for class_name_and_path in class_name_and_path_list:
 
                 image_path_list = [os.path.join(class_name_and_path[1], image_file) for image_file in os.listdir(class_name_and_path[1]) if image_file.endswith(image_format)]
@@ -142,6 +143,7 @@ def eval_featureHash(base_path, model_path, k = [1, 5, 10], image_format='.webp'
                             #print tc, class_name
                             if str(tc) == str(class_name):
                                 num = num + 1
+                                right_sum[t_idx] += 1
                                 is_find = True
                                 break
                         if is_find is False:
@@ -150,13 +152,15 @@ def eval_featureHash(base_path, model_path, k = [1, 5, 10], image_format='.webp'
             if tic % 100 == 0:
                 print 'Rank=%d时的正确率为%.02f(%d/%d)' % (tk, float(num) / now_num, num, my_sum)
             all_bad_list.append(bad_list)
-        print 'Rank=%d时的正确率为%.02f(%d/%d)' % (tk, float(num) / now_num, num, my_sum)
+            print 'Rank=%d时的正确率为%.02f(%d/%d)' % (tk, float(num) / now_num, num, my_sum)
         return all_bad_list
     for idx, b_p in enumerate(base_path):
         print '开始进行   {}   检测'.format(b_p)
         all_bad_list = test_featureHash(b_p, model_path, k, image_format)
         np.save('./all_bad_list_{}.npy'.format(idx), all_bad_list)
 
+    for idx in range(right_sum):
+        print 'Rank=%d时的正确率为%.02f(%d/%d)' % (k[idx], float(right_sum[idx]) / all_sum[idx], right_sum[idx], all_sum[idx])
 
 def help():
     print '用法: -f [图片路径] [选项]... [选项]...'

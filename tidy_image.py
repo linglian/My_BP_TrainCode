@@ -15,7 +15,7 @@ def let_do_it(file_path):
     file_list = []
     if os.path.exists(os.path.join(save_floder_path, class_name)):
         file_list = os.listdir(os.path.join(save_floder_path, class_name))
-    file_tools.copy_file(file_path, os.path.join(save_floder_path, class_name, str(len(file_list)) + file_format))
+    file_tools.copy_file(file_path, os.path.join(save_floder_path, class_name, file_name + file_format))
     #print os.path.join(save_floder_path, class_name, file_name)
     
 def help():
