@@ -16,7 +16,7 @@ def let_do_it(file_path):
     if os.path.exists(os.path.join(save_floder_path, class_name)):
         file_list = os.listdir(os.path.join(save_floder_path, class_name))
     file_tools.copy_file(file_path, os.path.join(save_floder_path, class_name, file_name + file_format))
-    #print os.path.join(save_floder_path, class_name, file_name)
+    print os.path.join(save_floder_path, class_name, file_name)
     
 def help():
     print '用法: -f [图片路径] [选项]... [选项]...'
