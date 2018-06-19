@@ -143,7 +143,7 @@ def find_k_FeatureHash(model_path, image_file_path, k):
 
 # 客户端发来的请求进行处理(最好需要几个就设置多少k，不然影响速度)
 # return 图片特征，最近的数组(k * max_img长度的数组, 相似度从近到远)
-def make_work(conn, mod, q):
+def make_work(conn):
     global my_arr, my_id, big_class
     try:
         msg=conn.recv()
@@ -240,9 +240,6 @@ if __name__ == '__main__':
         print '必须使用 -f 输入model_path用来指定三个npy文件路径'
     else:
         while True:
-            logging.info('Start Init')
-            mod, q = init()
-            logging.info('End Init')
             logging.info('Start Run')
-            run_server('/usr/local/server%d.temp' % server_id, b'lee123456', mod, q)
+            run_server('/usr/local/server%d.temp' % server_id, b'lee123456')
             logging.info('Stop Run')
