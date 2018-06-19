@@ -278,13 +278,13 @@ def make_work(conn):
             score = getDistOfCos(t_featrue, featrue)
             if pre_response.has_key(i):
                 if score > pre_response[i][1]:
-                    pre_response[i] = ['{} {} {}'.format(getDistances(t_featrue, featrue, 1), getDistances(t_featrue, featrue, 2), getDistances(t_featrue, featrue, 3)), score]
+                    pre_response[i] = [file_path_list[idx], score, getDistances(t_featrue, featrue, 1)]
             else:
-                pre_response[i] = ['{} {} {}'.format(getDistances(t_featrue, featrue, 1), getDistances(t_featrue, featrue, 2), getDistances(t_featrue, featrue, 3)), score]
+                pre_response[i] = [file_path_list[idx], score, getDistances(t_featrue, featrue, 1)]
 
         result_list = []
         for i in pre_response:
-            if pre_response[i][1] > 0.45:
+            if pre_response[i][1] > 0.65 or pre_response[i][2] > 60.0:
                 result_list.append([i, pre_response[i][0], pre_response[i][1]])
         
         def takeSecond(elem):
