@@ -1,0 +1,10 @@
+
+{% for img in imgs %}
+<img src="{{ img.1 }}">{{ img.0 }} {{ img.2 }}</img>
+{% endfor %}
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="img">
+    <button type="submit">上传</button>
+</form>
