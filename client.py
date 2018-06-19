@@ -1,4 +1,4 @@
-
+#coding=utf-8
 from multiprocessing.connection import Client
 from multiprocessing.connection import Listener
 
@@ -20,7 +20,7 @@ for idx, i in enumerate(ar):
         break
     elif i == 'Next':
         is_Ok = True
-        
+
 class_name_list = ar[t_idx]
 file_path_list = ar[t_idx + 1]
 feature_list = ar[t_idx + 2]
