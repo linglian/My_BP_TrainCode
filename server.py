@@ -189,7 +189,7 @@ def find_k_FeatureHash(model_path, image_file_path, k):
         for img in img_list:
             featrue = getFeature(img)
             if featrue is not None:
-                find_list = falconn_query.find_k_nearest_neighbors(query=featrue, k=k * 10)
+                find_list = falconn_query.find_k_nearest_neighbors(query=featrue, k=k)
                 class_name_list.extend(my_class_name[find_list])
                 file_path_list.extend(my_file_path[find_list])
                 feature_list.extend(my_feature[find_list])
@@ -251,7 +251,7 @@ def make_work(conn):
             msg.append('Must set Image Path use -f')
             return msg
         ti_time= time.time()
-        class_name_list, file_path_list, feature_list, featrue = find_k_FeatureHash(path, img, rank)
+        class_name_list, file_path_list, feature_list, featrue = find_k_FeatureHash(path, img, rank * 11)
         logging.info('开始测试:\n {}'.format(img))
 
         pre_response = {}
