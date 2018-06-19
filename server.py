@@ -284,7 +284,7 @@ def make_work(conn):
 
         result_list = []
         for i in pre_response:
-            if pre_response[i][1] > 0.65 and pre_response[i][2] < 65.0:
+            if pre_response[i][1] > 0.45 and pre_response[i][2] < 65.0:
                 result_list.append([i, pre_response[i][0], pre_response[i][1], pre_response[i][2]])
         
         def takeSecond(elem):
