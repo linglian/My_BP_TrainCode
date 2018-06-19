@@ -114,11 +114,6 @@ def getCrop(image_filepath, is_rotate=False, is_center_crop=True, img_size=(224,
         raise ValueError('image_filepath is Bad or None', image_filepath)
     w, h = img.size
 
-    # 进行Central-Crop
-    if is_center_crop:
-        img = img.crop((0, int(h * 0.2), w, int(h * 0.7)))
-        w, h = img.size
-    
     img_array = []
     img_array.append(img)
     if is_rotate:
