@@ -2,6 +2,8 @@
 from multiprocessing.connection import Client
 from multiprocessing.connection import Listener
 
+import numpy as np
+
 def getDistOfCos(f, t):
     up = np.sum(np.multiply(f, t))
     ff = np.sqrt(np.sum(np.multiply(f, f)))
