@@ -285,7 +285,7 @@ def make_work(conn):
         result_list = []
         for i in pre_response:
             if pre_response[i][1] > 0.65 or pre_response[i][2] < 65.0:
-                result_list.append([i, pre_response[i][0], pre_response[i][1]])
+                result_list.append([i, pre_response[i][0], pre_response[i][1], pre_response[i][2]])
         
         def takeSecond(elem):
             return elem[2]
@@ -296,7 +296,7 @@ def make_work(conn):
         msg.append(result_list)
         pre_log_str = ''
         for i in result_list:
-            pre_log_str = pre_log_str + '\n' + 'id: %s file_path: %s cos_score: %.2f%%' % (i[0], i[1], i[2])
+            pre_log_str = pre_log_str + '\n' + 'id: %s file_path: %s cos_score: %.2f%% L2_score: %.2f' % (i[0], i[1], i[2], i[3])
         logging.info('测试结果: {}'.format(pre_log_str))
         msg.append('Test Image Spend Time: %.2lf s' %
                     (time.time() - ti_time))
