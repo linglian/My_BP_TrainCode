@@ -87,14 +87,65 @@ img_pla = tf.placeholder(dtype=tf.float32, shape=[None, None, 3], name='img')
 
 image_preprocessing = image_preprocessing_fn(img_pla, 224, 224)
 
+def getCrop(image_filepath, is_rotate=False, is_center_crop=True, img_size=(224, 224), mode=10):
+    import cv2
+    from PIL import Image
+    def get_image_rotate(img, angle=0):
+        if isinstance(img, Image.Image) is False:
+            raise ArithmeticError('img Must be PIL.Image.Image', img)
+        w, h = img.size
+        rotate35_img_true = img.rotate(angle, expand=True)
+        rotate35_img_false = img.rotate(angle, expand=False)
+        width, height = rotate35_img_false.size
+        width2, height2 = rotate35_img_true.size
+        new_width = width - width2 + width
+        new_height = height - height2 + height
+        left = int((width - new_width) / 2)
+        top = int((height - new_height) / 2)
+        right = left + new_width
+        bottom = top + new_height
+        result_img = rotate35_img_false.crop((left, top, right, bottom))
+        return result_img
+    if mode != 5 and mode != 10:
+        raise ArithmeticError('Mode only has 5 or 10', mode)
+    try:
+        img = Image.fromarray(cv2.imread(image_filepath))
+    except Exception:
+        raise ValueError('image_filepath is Bad or None', image_filepath)
+    w, h = img.size
+
+    img_array = []
+    img_array.append(img)
+    if is_rotate:
+        rotate_array = [-30, -20, -10, 10, 20, 30]
+        for angle in rotate_array:
+            img_array.append(get_image_rotate(img, angle=angle))
+    # 获取Crop-5
+    img_array.append( img.crop( (0, 0,
+                                               int(w * 0.5), int(h * 0.5))))
+    img_array.append( img.crop( (int(w * 0.5), 0,
+                                               w, int(h * 0.5))))
+    img_array.append( img.crop( (0, int(h * 0.5),
+                                               int(w * 0.5), h)))
+    img_array.append( img.crop( (int(w * 0.5), int(h * 0.5),
+                                               w, h)))
+    img_array.append( img.crop( (int(w * 0.25), int(h * 0.25),
+                                               int(w * 0.75), int(h * 0.75))))
+    # 进而获取Crop-10
+    if mode == 10:
+        for i in range(5):
+            img_array.append(img_array[i].transpose(Image.FLIP_LEFT_RIGHT))
+    result_array = []
+    for im in img_array:
+        result_array.append(cv2.resize(np.array(im), img_size))
+    return result_array
+
 def find_k_FeatureHash(model_path, image_file_path, k):
     global is_need_init_find_k_FeatureHash
     global falconn_query, mxnet_feature_extractor
     global my_feature, my_class_name, my_file_path
     
-    def getFeature(image_filepath):
-
-        img = cv2.imread(image_filepath)
+    def getFeature(img):
         if img is not None:
             image = imutils.opencv2matplotlib(img)
 
@@ -130,12 +181,18 @@ def find_k_FeatureHash(model_path, image_file_path, k):
         my_feature, my_class_name, my_file_path, falconn_query = init_falconn()
         is_need_init_find_k_FeatureHash = False
         print '初始化结束...'
-    featrue = getFeature(image_file_path)
-    if featrue is not None:
-        find_list = falconn_query.find_k_nearest_neighbors(query=featrue, k=k)
-        class_name_list = my_class_name[find_list]
-        file_path_list = my_file_path[find_list]
-        feature_list = my_feature[find_list]
+    img_list = getCrop(image_file_path)
+    class_name_list = []
+    file_path_list = []
+    feature_list = []
+    if img_list is not None:
+        for img in img_list:
+            featrue = getFeature(img)
+            if featrue is not None:
+                find_list = falconn_query.find_k_nearest_neighbors(query=featrue, k=k * 10)
+                class_name_list.extend(my_class_name[find_list])
+                file_path_list.extend(my_file_path[find_list])
+                feature_list.extend(my_feature[find_list])
         return class_name_list, file_path_list, feature_list, featrue
     else:
         return None, None
@@ -195,7 +252,7 @@ def make_work(conn):
             return msg
         ti_time= time.time()
         class_name_list, file_path_list, feature_list, featrue = find_k_FeatureHash(path, img, rank)
-        logging.info('开始测试: {}'.format(img))
+        logging.info('开始测试:\n {}'.format(img))
 
         pre_response = {}
 
