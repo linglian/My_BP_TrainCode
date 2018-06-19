@@ -41,8 +41,8 @@ if __name__ == '__main__':
 
         f = open('temp.txt', 'w')
 
-        f.write(pre_response)
-        
+        print pre_response
+
         pre_log_str = ''
 
         for idx, i in enumerate(pre_response):
