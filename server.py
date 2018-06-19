@@ -197,13 +197,30 @@ def find_k_FeatureHash(model_path, image_file_path, k):
     else:
         return None, None
 
+def getDistances(f, t, type=1):
+    if type == 1:
+        return getDistOfL2(f, t)
+    elif type == 2:
+        return getDistOfSquare(f, t)
+    elif type == 3:
+        return 1.0 - getDistOfCos(f, t)
+
+
+def getDistOfL2(form, to):
+    return cv2.norm(form, to, normType=cv2.NORM_L2)
+
+
+def getDistOfSquare(form, to):
+    return np.sqrt(np.sum(np.square(form - to)))
+
+
 def getDistOfCos(f, t):
     up = np.sum(np.multiply(f, t))
     ff = np.sqrt(np.sum(np.multiply(f, f)))
     tt = np.sqrt(np.sum(np.multiply(t, t)))
     down = ff * tt
     return up / down
-
+    
 # 客户端发来的请求进行处理(最好需要几个就设置多少k，不然影响速度)
 # return 图片特征，最近的数组(k * max_img长度的数组, 相似度从近到远)
 def make_work(conn):
@@ -261,13 +278,13 @@ def make_work(conn):
             score = getDistOfCos(t_featrue, featrue)
             if pre_response.has_key(i):
                 if score > pre_response[i][1]:
-                    pre_response[i] = [file_path_list[idx], score]
+                    pre_response[i] = ['{} {} {}'.format(getDistances(t_featrue, featrue, 1), getDistances(t_featrue, featrue, 2), getDistances(t_featrue, featrue, 3)), score]
             else:
-                pre_response[i] = [file_path_list[idx], score]
+                pre_response[i] = ['{} {} {}'.format(getDistances(t_featrue, featrue, 1), getDistances(t_featrue, featrue, 2), getDistances(t_featrue, featrue, 3)), score]
 
         result_list = []
         for i in pre_response:
-            if pre_response[i][1] > 0.05:
+            if pre_response[i][1] > 0.45:
                 result_list.append([i, pre_response[i][0], pre_response[i][1]])
         
         def takeSecond(elem):
