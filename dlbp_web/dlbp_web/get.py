@@ -17,8 +17,8 @@ def uploadImg(request):
     if request.method == 'POST':
         f=request.FILES['img']
 
-        import random
-        file_name = 'static/image/temp_{}.jpg'.format(random.randint(1, 10000))
+        import time
+        file_name = 'static/image/temp_{}.jpg'.format(time.time())
         with open(file_name, 'wb+') as destination:
             for chunk in f.chunks():
                 destination.write(chunk)
@@ -43,7 +43,7 @@ def uploadImg(request):
             file_name = i[1]
             i[1] = '/medias/' + file_name.split('/')[-2] + '/' + file_name.split('/')[-1].split('_')[0] + '_000' + file_name.split('/')[-1].split('_')[1][3:]
             i[2] = '%.2f%%' % i[2]
-            
+
         content = {
             'imgs': result_list,
         }
