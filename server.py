@@ -293,9 +293,9 @@ def make_work(conn):
         result_list.sort(key=takeSecond, reverse=True)
 
         msg.append('Next')
-        msg.append(result_list)
+        msg.append(result_list[:rank])
         pre_log_str = ''
-        for idx, i in enumerate(result_list):
+        for idx, i in enumerate(result_list[:rank]):
             pre_log_str = pre_log_str + '\n' + 'No.%d id: %s file_path: %s cos_score: %.2f%% L2_score: %.2f' % ((idx + 1), i[0], i[1], i[2], i[3])
         logging.info('测试结果: {}'.format(pre_log_str))
         msg.append('Test Image Spend Time: %.2lf s' %
