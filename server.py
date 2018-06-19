@@ -57,7 +57,7 @@ import random
 import imutils
 import cv2
 
-checkpoint = tf.train.get_checkpoint_state('/home/lol/DeepLearn/Tensorflow-Ipynb/logs/')
+checkpoint = tf.train.get_checkpoint_state('/home/lee/Downloads/logs/')
 
 input_checkpoint = checkpoint.model_checkpoint_path
 
