@@ -57,7 +57,7 @@ def getCrop(image_filepath, is_rotate=False, is_center_crop=True, img_size=(224,
     w, h = img.size
     # 进行Central-Crop
     if is_center_crop:
-        img = img.crop((int(w * 0.2), int(h * 0.2), int(w * 0.8), int(h * 0.8)))
+        img = img.crop((0, 0, w, int(h * 0.7)))
         w, h = img.size
     img_array = []
     img_array.append(img)
