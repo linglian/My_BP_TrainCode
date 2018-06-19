@@ -203,12 +203,12 @@ def make_work(conn):
 
 
 # 运行Server，一直监听接口
-def run_server(address, authkey, mod, q):
+def run_server(address, authkey):
     serv = Listener(address, authkey =authkey)
     while True:
         try:
             client= serv.accept()
-            msg= make_work(client, mod, q)
+            msg= make_work(client)
             if msg == 'Close': # 关闭监听
                 serv.close()
                 return "Close"
