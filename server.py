@@ -29,7 +29,7 @@ console.setFormatter(formatter)
 logging.getLogger('').addHandler(console)
 
 # 公共区
-path = '/media/lee/data/macropic/已整理宏观图/'
+path = None
 is_pool = True
 
 # 提取特征区
@@ -43,7 +43,7 @@ import tensorflow as tf
 import sys
 import time
 from tensorflow.contrib import slim
-sys.path.insert(0, '/home/lol/DeepLearn/models/research/slim/')
+sys.path.insert(0, '/home/lee/DeepLearn/models/research/slim/')
 from nets import nets_factory
 from datasets import dataset_classification
 from preprocessing import preprocessing_factory
@@ -236,10 +236,13 @@ if __name__ == '__main__':
             sys.path.insert(0, mxnetpath)
         elif op == '-t': # 设置增强数量
             tilesPerImage = int(value)
-    while True:
-        logging.info('Start Init')
-        mod, q = init()
-        logging.info('End Init')
-        logging.info('Start Run')
-        run_server('/usr/local/server%d.temp' % server_id, b'lee123456', mod, q)
-        logging.info('Stop Run')
+    if path is None:
+        print '必须使用 -f 输入model_path用来指定三个npy文件路径'
+    else:
+        while True:
+            logging.info('Start Init')
+            mod, q = init()
+            logging.info('End Init')
+            logging.info('Start Run')
+            run_server('/usr/local/server%d.temp' % server_id, b'lee123456', mod, q)
+            logging.info('Stop Run')
