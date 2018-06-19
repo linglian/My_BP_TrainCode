@@ -140,6 +140,12 @@ def find_k_FeatureHash(model_path, image_file_path, k):
     else:
         return None, None
 
+def getDistOfCos(f, t):
+    up = np.sum(np.multiply(f, t))
+    ff = np.sqrt(np.sum(np.multiply(f, f)))
+    tt = np.sqrt(np.sum(np.multiply(t, t)))
+    down = ff * tt
+    return up / down
 
 # 客户端发来的请求进行处理(最好需要几个就设置多少k，不然影响速度)
 # return 图片特征，最近的数组(k * max_img长度的数组, 相似度从近到远)
@@ -202,7 +208,7 @@ def make_work(conn):
                     pre_response[i] = [file_path_list[idx], score]
             else:
                 pre_response[i] = [file_path_list[idx], score]
-                
+
         msg.append('Next')
         msg.append(pre_response)
         logging.info('测试结果: {}'.format(pre_response))
