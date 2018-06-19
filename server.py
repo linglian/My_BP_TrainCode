@@ -189,11 +189,23 @@ def make_work(conn):
             return msg
         ti_time= time.time()
         class_name_list, file_path_list, feature_list, featrue = find_k_FeatureHash(path, img, rank)
+        logging.info('开始测试: {}'.format(img))
+
+        pre_response = {}
+
+        for idx, i in enumerate(class_name_list):
+            t_featrue = feature_list[idx]
+            score = getDistOfCos(t_featrue, featrue)
+            if pre_response.has_key(i):
+                t_feature = feature_list[idx]
+                if score > pre_response[i][1]:
+                    pre_response[i] = [file_path_list[idx], score]
+            else:
+                pre_response[i] = [file_path_list[idx], score]
+                
         msg.append('Next')
-        msg.append(class_name_list)
-        msg.append(file_path_list)
-        msg.append(feature_list)
-        msg.append(featrue)
+        msg.append(pre_response)
+        logging.info('测试结果: {}'.format(pre_response))
         msg.append('Test Image Spend Time: %.2lf s' %
                     (time.time() - ti_time))
         return msg
