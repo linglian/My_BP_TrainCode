@@ -15,11 +15,12 @@ ar = c.recv()
 is_Ok = False
 t_idx = 0
 for idx, i in enumerate(ar):
-    if i == 'Next':
-        is_Ok = True
-    elif is_Ok:
+    if is_Ok:
         t_idx = idx
         break
+    elif i == 'Next':
+        is_Ok = True
+        
 class_name_list = ar[t_idx]
 file_path_list = ar[t_idx + 1]
 feature_list = ar[t_idx + 2]
