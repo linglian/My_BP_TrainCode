@@ -277,7 +277,7 @@ def make_work(conn):
             t_featrue = feature_list[idx]
             score = getDistOfCos(t_featrue, featrue)
             if pre_response.has_key(i):
-                if score > pre_response[i][1]:
+                if getDistances(t_featrue, featrue, 1) < pre_response[i][2]:
                     pre_response[i] = [file_path_list[idx], score, getDistances(t_featrue, featrue, 1)]
             else:
                 pre_response[i] = [file_path_list[idx], score, getDistances(t_featrue, featrue, 1)]
