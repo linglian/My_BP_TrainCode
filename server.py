@@ -152,7 +152,7 @@ def find_k_FeatureHash(model_path, image_file_path, k):
     
     def getFeature(img):
         if img is not None:
-            image = sess.run(image_preprocessing, feed_dict={'img:0': image})
+            image = sess.run(image_preprocessing, feed_dict={'img:0': img})
 
             result_feature = sess.run("resnet_v1_50/pool5:0", feed_dict={'input:0': [image]})
 
