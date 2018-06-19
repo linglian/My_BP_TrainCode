@@ -203,7 +203,6 @@ def make_work(conn):
             t_featrue = feature_list[idx]
             score = getDistOfCos(t_featrue, featrue)
             if pre_response.has_key(i):
-                t_feature = feature_list[idx]
                 if score > pre_response[i][1]:
                     pre_response[i] = [file_path_list[idx], score]
             else:

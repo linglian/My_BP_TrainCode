@@ -4,13 +4,6 @@ from multiprocessing.connection import Listener
 
 import numpy as np
 
-def getDistOfCos(f, t):
-    up = np.sum(np.multiply(f, t))
-    ff = np.sqrt(np.sum(np.multiply(f, f)))
-    tt = np.sqrt(np.sum(np.multiply(t, t)))
-    down = ff * tt
-    return up / down
-
 resp = {
     'info': '',
     'body': {}}
@@ -31,27 +24,8 @@ for idx, i in enumerate(ar):
     elif i == 'Next':
         is_Ok = True
 
-class_name_list = ar[t_idx]
-file_path_list = ar[t_idx + 1]
-feature_list = ar[t_idx + 2]
-featrue = ar[t_idx + 3]
-
-pre_response = {}
-
-for idx, i in enumerate(class_name_list):
-    t_featrue = feature_list[idx]
-    score = getDistOfCos(t_featrue, featrue)
-    if pre_response.has_key(i):
-        t_feature = feature_list[idx]
-        if score > pre_response[i][1]:
-            pre_response[i] = [file_path_list[idx], score]
-    else:
-        pre_response[i] = [file_path_list[idx], score]
+pre_response = ar[t_idx]
 
 resp['body']['response'] = pre_response
-resp['body']['class_name_list'] = class_name_list
-resp['body']['file_path_list'] = file_path_list
-resp['body']['feature_list'] = feature_list
-resp['body']['featrue'] = featrue
 
 print resp
