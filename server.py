@@ -210,7 +210,10 @@ def make_work(conn):
 
         msg.append('Next')
         msg.append(pre_response)
-        logging.info('测试结果: {}'.format(pre_response))
+        pre_log_str = ''
+        for i in pre_response:
+            pre_log_str = pre_log_str + '\n' + 'id: ' + i + ' file_path: ' + pre_response[0] + ' score: ' + pre_response
+        logging.info('测试结果: {}'.format(pre_log_str))
         msg.append('Test Image Spend Time: %.2lf s' %
                     (time.time() - ti_time))
         return msg
