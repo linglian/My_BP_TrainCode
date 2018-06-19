@@ -116,7 +116,7 @@ def getCrop(image_filepath, is_rotate=False, is_center_crop=True, img_size=(224,
 
     # 进行Central-Crop
     if is_center_crop:
-        img = img.crop((0, int(h * 0.2), 0, int(h * 0.7)))
+        img = img.crop((0, int(h * 0.2), w, int(h * 0.7)))
         w, h = img.size
     
     img_array = []
@@ -143,7 +143,7 @@ def getCrop(image_filepath, is_rotate=False, is_center_crop=True, img_size=(224,
     result_array = []
     for im in img_array:
         result_array.append(cv2.resize(np.array(im), img_size))
-    return result_array
+    return img_array
 
 def find_k_FeatureHash(model_path, image_file_path, k):
     global is_need_init_find_k_FeatureHash
