@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
         pre_log_str = ''
 
-        for i in pre_response:
-            pre_log_str = pre_log_str + '\n' + 'id: %s file_path: %s cos_score: %.2f%%' % (i[0], i[1], i[2])
+        for idx, i in enumerate(pre_response):
+            pre_log_str = pre_log_str + '\n' + 'No.%d id: %s file_path: %s cos_score: %.2f%%' % ((idx + 1), i[0], i[1], i[2])
 
         print pre_log_str
