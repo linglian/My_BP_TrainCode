@@ -1,4 +1,4 @@
-#coding=utf-8
+#coding=utf-8   
 from multiprocessing.connection import Client
 from multiprocessing.connection import Listener
 
@@ -7,6 +7,7 @@ resp = {
     'body': {}}
 
 img = '/media/lee/data/macropic/宏观分类自采/格子/1201/DSC03471.JPG'
+
 c = Client('/usr/local/server%d.temp' % 99, authkey=b'lee123456')
 # 将信息传送给服务端
 c.send(['-f', img])
