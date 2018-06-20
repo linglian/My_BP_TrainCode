@@ -36,5 +36,5 @@ urlpatterns = [
     url('save_sjd', get.save_sjd),
     url('del_sjd', get.del_sjd),
     url('upload', get.uploadImg),
-    url(r'^medias/(?P<path>.*)$', serve, {'document_root': '/media/lee/data/macropic/newp/new_数据加强版_整理版/'}), 
+    url(r'^medias/(?P<path>.*)$', serve, {'document_root': u'/media/lee/data/macropic/newp/new_数据加强版_整理版/'}), 
 ]
