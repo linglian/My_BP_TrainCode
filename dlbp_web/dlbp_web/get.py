@@ -51,10 +51,9 @@ def uploadImg(request):
 
             idx = len(file_name.split('/')[-1].split('_'))
 
-            for i in range(idx - 2):
-                str1 = str1 + '_' + file_name.split('/')[-1].split('_')[i + 1]
+            for j in range(idx - 2):
+                str1 = str1 + '_' + file_name.split('/')[-1].split('_')[j + 1]
             str1 = str1 + '_000' + file_name.split('/')[-1].split('_')[idx - 1][3:]
-            print str1
             i[1] = str1
             i[2] = '%.2f%%' % i[2]
 
