@@ -47,7 +47,15 @@ def uploadImg(request):
 
         for i in result_list:
             file_name = i[1]
-            i[1] = '/medias/' + file_name.split('/')[-2] + '/' + file_name.split('/')[-1].split('_')[0] + '_000' + file_name.split('/')[-1].split('_')[1][3:]
+            str1 = file_name.split('/')[-2] + '/' + file_name.split('/')[-1].split('_')[0]
+
+            idx = len(file_name.split('/')[-1].split('_'))
+
+            for i in range(idx - 2):
+                str1 = str1 + '_' + file_name.split('/')[-1].split('_')[i + 1]
+            str1 = str1 + '_000' + file_name.split('/')[-1].split('_')[idx - 1][3:]
+            print str1
+            i[1] = str1
             i[2] = '%.2f%%' % i[2]
 
         content = {
