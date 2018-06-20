@@ -47,7 +47,7 @@ def uploadImg(request):
 
         for i in result_list:
             file_name = i[1]
-            str1 = file_name.split('/')[-2] + '/' + file_name.split('/')[-1].split('_')[0]
+            str1 = '/medias/' + file_name.split('/')[-2] + '/' + file_name.split('/')[-1].split('_')[0]
 
             idx = len(file_name.split('/')[-1].split('_'))
 
