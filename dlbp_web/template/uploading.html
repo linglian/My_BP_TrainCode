@@ -1,12 +1,10 @@
 
 {% for img in imgs %}
-<span style="width:300px;height:224px;border:1 solid gray">
 <img src="{{ img.1 }}" style="width:224px;height:224px">
-{% ifequal img.0 sk_id %} <font style="color:green"> {% endifequal %}
-{% ifnotequal img.0 sk_id %} <font style="color:red"> {% endifnotequal %}
+{% ifequal img.0 sk_id %} <font style="position:absolute; z-index:2; left:10px; top:10px;color:green"> {% endifequal %}
+{% ifnotequal img.0 sk_id %} <font style="position:absolute; z-index:2; left:10px; top:10px;color:red"> {% endifnotequal %}
 {{ img.0 }} {{ img.2 }}
 </font>
-</span>
 {% endfor %}
 
 <form method="POST" enctype="multipart/form-data">
