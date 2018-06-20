@@ -1,10 +1,16 @@
 
 {% for img in imgs %}
-<img src="{{ img.1 }}" style="width:224px;height:224px">{{ img.0 }} {{ img.2 }}</img>
+<img src="{{ img.1 }}" style="width:224px;height:224px">
+    {% ifequal img.0 sk_id %} <font style="color:green"> {% endifequal %}
+    {% ifnotequal img.0 sk_id %} <font style="color:red"> {% endifnotequal %}
+    {{ img.0 }} {{ img.2 }}
+    </font>
+</img>
 {% endfor %}
 
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="file" name="img">
+    色卡ID: <input type="test" name="sk_id" value="{{sk_id}}">
     <button type="submit">上传</button>
 </form>

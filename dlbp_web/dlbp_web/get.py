@@ -13,11 +13,15 @@ my_id = 99
 def uploadImg(request):
     content = {
         'imgs': [],
+        'sk_id': 0
     }
     if request.method == 'POST':
         f=request.FILES['img']
 
+        sk_id = request.POST['sk_id']
+
         import time
+
         file_name = '/home/lee/DeepLearn/My_BP_TrainCode/dlbp_web/static/image/temp_{}.jpg'.format(time.time())
         with open(file_name, 'wb+') as destination:
             for chunk in f.chunks():
@@ -46,6 +50,7 @@ def uploadImg(request):
 
         content = {
             'imgs': result_list,
+            'sk_id': sk_id
         }
 
     return render(request, 'uploading.html', content)
