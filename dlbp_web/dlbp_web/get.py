@@ -22,7 +22,9 @@ def uploadImg(request):
 
         import time
 
-        file_name = '/home/lee/DeepLearn/My_BP_TrainCode/dlbp_web/static/image/temp_{}.jpg'.format(time.time())
+        ti = time.time()
+
+        file_name = '/home/lee/DeepLearn/My_BP_TrainCode/dlbp_web/static/image/temp_{}.jpg'.format(ti)
         with open(file_name, 'wb+') as destination:
             for chunk in f.chunks():
                 destination.write(chunk)
@@ -49,6 +51,7 @@ def uploadImg(request):
             i[2] = '%.2f%%' % i[2]
 
         content = {
+            'test_img': '/medias/temp_{}.jpg'.format(ti),
             'imgs': result_list,
             'sk_id': sk_id
         }
