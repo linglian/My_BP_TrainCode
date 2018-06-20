@@ -57,7 +57,7 @@ def uploadImg(request):
             str1 = str1 + '_000' + file_name.split('/')[-1].split('_')[idx - 1][3:]
 
             i[1] = str1
-            i[2] = '%.2f%% %s' % (i[2], file_name.split('/')[-1])
+            i[2] = '%.2f%% %s' % (i[2], file_name.split('/')[-1][:-6])
 
         content = {
             'f_name': f_name,
