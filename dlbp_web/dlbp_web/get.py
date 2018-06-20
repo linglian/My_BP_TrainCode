@@ -51,7 +51,7 @@ def uploadImg(request):
             i[2] = '%.2f%%' % i[2]
 
         content = {
-            'test_img': '/medias/temp_{}.jpg'.format(ti),
+            'test_img': '/test_image/temp_{}.jpg'.format(ti),
             'imgs': result_list,
             'sk_id': sk_id
         }
