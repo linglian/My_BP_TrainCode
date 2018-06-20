@@ -1,8 +1,8 @@
 
-<img src='{{test_img}}' style="width:224px;height:224px"><font style="position:relative; z-index:2; left:-190px; top:-20px;color:green;font-size:24">{{f_name}}</font>
+<img src='{{test_img}}' style="width:224px;height:224px"><font style="position:relative; z-index:2; left:-190px; top:-20px;color:greenyellow;font-size:24">{{f_name}}</font>
 {% for img in imgs %}
 <img src="{{ img.1 }}" style="width:224px;height:224px">
-{% ifequal img.0 sk_id %} <font style="position:relative; z-index:2; left:-190px; top:-20px;color:green;font-size:32"> {% endifequal %}
+{% ifequal img.0 sk_id %} <font style="position:relative; z-index:2; left:-190px; top:-20px;color:greenyellow;font-size:32"> {% endifequal %}
 {% ifnotequal img.0 sk_id %} <font style="position:relative; z-index:2; left:-190px; top:-20px;color:red;font-size:32"> {% endifnotequal %}
 {{ img.0 }} {{ img.2 }}
 </font>
