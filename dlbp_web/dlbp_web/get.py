@@ -16,8 +16,8 @@ def uploadImg(request):
         'sk_id': 0
     }
     if request.method == 'POST':
-        f=request.FILES['img']
-
+        f = request.FILES['img']
+        f_name = request.FILES['img'].name
         sk_id = request.POST['sk_id']
 
         import time
@@ -58,6 +58,7 @@ def uploadImg(request):
             i[2] = '%.2f%%' % i[2]
 
         content = {
+            'f_name': f_name,
             'test_img': '/test_image/temp_{}.jpg'.format(ti),
             'imgs': result_list,
             'sk_id': sk_id
