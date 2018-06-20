@@ -18,7 +18,7 @@ def uploadImg(request):
         f=request.FILES['img']
 
         import time
-        file_name = 'static/image/temp_{}.jpg'.format(time.time())
+        file_name = '/home/lee/DeepLearn/My_BP_TrainCode/dlbl_web/static/image/temp_{}.jpg'.format(time.time())
         with open(file_name, 'wb+') as destination:
             for chunk in f.chunks():
                 destination.write(chunk)
