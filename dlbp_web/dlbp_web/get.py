@@ -22,7 +22,8 @@ def uploadImg(request):
 
         import time
 
-        file_name = '/home/lee/DeepLearn/My_BP_TrainCode/dlbp_web/static/image/temp_{}.jpg'.format(time.time())
+        show_file_name = 'temp_{}.jpg'.format(time.time()
+        file_name = '/home/lee/DeepLearn/My_BP_TrainCode/dlbp_web/static/image/' + show_file_name
         with open(file_name, 'wb+') as destination:
             for chunk in f.chunks():
                 destination.write(chunk)
@@ -48,6 +49,7 @@ def uploadImg(request):
             i[1] = '/medias/' + file_name.split('/')[-2] + '/' + file_name.split('/')[-1].split('_')[0] + '_000' + file_name.split('/')[-1].split('_')[1][3:]
             i[2] = '%.2f%%' % i[2]
 
+        result_list.append(['原图', '/medias/' + show_file_name, '100%'])
         content = {
             'imgs': result_list,
             'sk_id': sk_id
