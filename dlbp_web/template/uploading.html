@@ -2,7 +2,6 @@
 {% for img in imgs %}
 <span style="width:300px;height:224px;border:1 solid gray">
 <img src="{{ img.1 }}" style="width:224px;height:224px">
-</img>
 {% ifequal img.0 sk_id %} <font style="color:green"> {% endifequal %}
 {% ifnotequal img.0 sk_id %} <font style="color:red"> {% endifnotequal %}
 {{ img.0 }} {{ img.2 }}
