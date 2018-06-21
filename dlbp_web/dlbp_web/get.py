@@ -57,7 +57,7 @@ def uploadImg(request):
 
         content = {
             'f_name': f_name,
-            'test_img': '/test_image/temp_{}.jpg'.format(file_name),
+            'test_img': '/test_image/temp_{}.jpg'.format(f_name),
             'imgs': result_list,
             'sk_id': sk_id
         }
