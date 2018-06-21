@@ -24,7 +24,7 @@ def uploadImg(request):
         with open(file_name, 'wb+') as destination:
             for chunk in f.chunks():
                 destination.write(chunk)
-
+     
         c = Client('/usr/local/server%d.temp' % 99, authkey=b'lee123456')
         # 将信息传送给服务端
         c.send(['-f', file_name, '-k', 50])
@@ -57,7 +57,7 @@ def uploadImg(request):
 
         content = {
             'f_name': f_name,
-            'test_img': '/test_image/temp_{}.jpg'.format(ti),
+            'test_img': '/test_image/temp_{}.jpg'.format(file_name),
             'imgs': result_list,
             'sk_id': sk_id
         }
