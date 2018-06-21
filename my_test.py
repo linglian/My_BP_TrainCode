@@ -18,7 +18,7 @@ for i in floder_list:
     npy_file_path_list = np.load(os.path.join(i, 'tensorflow-file_path.npy'))
     npy_feature_list = np.load(os.path.join(i, 'tensorflow-feature.npy'))
 
-    print '正在读取并解析{}'.format(i)
+    print '正在读取并解析{}'.format(i) 
     for idx in range(len(npy_feature_list)):
         feature_list.append(npy_feature_list[idx])
         class_name_list.append(npy_class_name_list[idx])

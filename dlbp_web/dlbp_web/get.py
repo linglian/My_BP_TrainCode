@@ -20,11 +20,7 @@ def uploadImg(request):
         f_name = request.FILES['img'].name
         sk_id = request.POST['sk_id']
 
-        import time
-
-        ti = time.time()
-
-        file_name = '/home/lee/DeepLearn/My_BP_TrainCode/dlbp_web/static/image/temp_{}.jpg'.format(ti)
+        file_name = '/home/lee/DeepLearn/My_BP_TrainCode/dlbp_web/static/image/temp_{}.jpg'.format(f_name)
         with open(file_name, 'wb+') as destination:
             for chunk in f.chunks():
                 destination.write(chunk)
