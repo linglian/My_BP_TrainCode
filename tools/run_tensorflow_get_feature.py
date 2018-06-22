@@ -25,6 +25,9 @@ import cv2
 from tools import file_tools
 import imutils
 
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 def use_tensorflow_get_feature(base_path, save_path):
     
     checkpoint = tf.train.get_checkpoint_state('/home/lee/Downloads/logs/')

@@ -10,6 +10,9 @@ import sys
 import getopt
 import time
 
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 # 数据增强区
 is_rotate = False
 is_center_crop = True
