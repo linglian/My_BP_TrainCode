@@ -20,7 +20,7 @@ def uploadImg(request):
         f_name = request.FILES['img'].name
         sk_id = request.POST['sk_id']
 
-        file_name = '/home/lee/DeepLearn/My_BP_TrainCode/dlbp_web/static/image/temp_{}.jpg'.format(f_name)
+        file_name = '/home/lee/DeepLearn/My_BP_TrainCode/dlbp_web/static/image/temp_%s.jpg' % f_name
         with open(file_name, 'wb+') as destination:
             for chunk in f.chunks():
                 destination.write(chunk)
@@ -57,7 +57,7 @@ def uploadImg(request):
 
         content = {
             'f_name': f_name,
-            'test_img': '/test_image/temp_{}.jpg'.format(f_name),
+            'test_img': '/test_image/temp_%s.jpg' % f_name,
             'imgs': result_list,
             'sk_id': sk_id
         }
