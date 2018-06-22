@@ -11,7 +11,7 @@ import getopt
 import time
 
 reload(sys)
-sys.setdefaultencoding('utf8')
+sys.setdefaultencoding('utf-8')
 
 # 数据增强区
 is_rotate = False

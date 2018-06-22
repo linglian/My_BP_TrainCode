@@ -26,7 +26,7 @@ from tools import file_tools
 import imutils
 
 reload(sys)
-sys.setdefaultencoding('utf8')
+sys.setdefaultencoding('utf-8')
 
 def use_tensorflow_get_feature(base_path, save_path):
     
