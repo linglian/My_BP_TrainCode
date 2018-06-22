@@ -15,6 +15,7 @@ num = 0
 
 # 数据整理
 def run_tidy(file_path, save_floder_path, file_format='.jpg'):
+    global num
     from tools import file_tools
     def let_do_it(file_path):
         file_name = file_tools.getFileName(file_path)
