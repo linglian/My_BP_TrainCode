@@ -27,7 +27,7 @@ def run_tidy(file_path, save_floder_path, file_format='.jpg'):
         if os.path.exists(os.path.join(save_floder_path, class_name, file_name + file_format)) is not True:
             num = num +  1
             file_tools.copy_file(file_path, os.path.join(save_floder_path, class_name, file_name + file_format))
-    file_tools.traverse_floder(file_path, let_do_it, check_file_format=file_format)
+    file_tools.traverse_floder(file_path, let_do_it, check_file_format=file_format, is_log=False)
 
 # 提取特征
 def run_tensorflow(base_path, save_path=None):
