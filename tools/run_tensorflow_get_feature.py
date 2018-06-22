@@ -8,7 +8,7 @@ tf.logging.set_verbosity(tf.logging.INFO)
 import tensorflow as tf
 import sys
 from tensorflow.contrib import slim
-sys.path.insert(0, '/home/lol/DeepLearn/models/research/slim/')
+sys.path.insert(0, '/home/lee/DeepLearn/models/research/slim/')
 from nets import nets_factory
 from datasets import dataset_classification
 from preprocessing import preprocessing_factory
@@ -25,10 +25,9 @@ import cv2
 from tools import file_tools
 import imutils
 
-
 def use_tensorflow_get_feature(base_path, save_path):
     
-    checkpoint = tf.train.get_checkpoint_state('/home/lol/DeepLearn/Tensorflow-Ipynb/logs/')
+    checkpoint = tf.train.get_checkpoint_state('/home/lee/Downloads/logs/')
 
     input_checkpoint = checkpoint.model_checkpoint_path
 
