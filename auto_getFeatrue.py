@@ -43,7 +43,7 @@ while True:
     from multiprocessing.connection import Listener
 
     data_augmentation.run(first_path, data_augmentation_save_path)
-    run_tidy(data_augmentation, tidy_save_path)
+    run_tidy(data_augmentation_save_path, tidy_save_path)
     run_tensorflow(tidy_save_path)
     
     print '检测到{}个新图片'.format(num / 11)

@@ -3,6 +3,10 @@
 """移动文件
 """
 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 def move_file(srcfile,dstfile):
     import shutil
     import os
