@@ -20,11 +20,18 @@ def uploadImg(request):
         f_name = request.FILES['img'].name
         sk_id = request.POST['sk_id']
 
-        file_name = '/home/lee/DeepLearn/My_BP_TrainCode/dlbp_web/static/image/temp_%s.jpg' % f_name
+        file_name = '/home/lee/DeepLearn/My_BP_TrainCode/dlbp_web/static/image/temp_%s_%s.jpg' % (f_name, str(ti))
         with open(file_name, 'wb+') as destination:
             for chunk in f.chunks():
                 destination.write(chunk)
      
+        import time
+        ti = time.time();
+        file_name = '/home/lee/DeepLearn/My_BP_TrainCode/dlbp_web/static/image/temp_{}.jpg'.format(ti)
+        with open(file_name, 'wb+') as destination:
+            for chunk in f.chunks():
+                destination.write(chunk)
+
         c = Client('/usr/local/server%d.temp' % 99, authkey=b'lee123456')
         # 将信息传送给服务端
         c.send(['-f', file_name, '-k', 50])
@@ -57,7 +64,7 @@ def uploadImg(request):
 
         content = {
             'f_name': f_name,
-            'test_img': '/test_image/temp_%s.jpg' % f_name,
+            'test_img': '/test_image/temp_{}.jpg'.format(ti),
             'imgs': result_list,
             'sk_id': sk_id
         }
