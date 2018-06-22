@@ -75,7 +75,7 @@ check_file_format: 文件格式
 def traverse_floder(base_folder, dothing_func, check_file_format='jpg', is_log=True):
     import os
 
-    if is_log:
+    if is_log is True:
         print('Check %s' % base_folder)
 
     # 获取base_folder目录下的所有文件
