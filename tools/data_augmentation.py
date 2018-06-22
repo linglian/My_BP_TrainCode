@@ -1,4 +1,6 @@
 #coding=utf-8
+#encoding=utf-8
+
 
 from PIL import Image
 import cv2
