@@ -33,9 +33,9 @@ def run_tensorflow(base_path, save_path=None):
         save_path = base_path
     run_tensorflow_get_feature.use_tensorflow_get_feature(base_path,save_path)
 
-first_path = '/media/lee/data/macropic/newp/new/'
-data_augmentation_save_path = '/media/lee/data/macropic/newp/new_数据加强/'
-tidy_save_path = '/media/lee/data/macropic/newp/new_数据加强_整理版/'
+first_path = u'/media/lee/data/macropic/newp/new/'
+data_augmentation_save_path = u'/media/lee/data/macropic/newp/new_数据加强/'
+tidy_save_path = u'/media/lee/data/macropic/newp/new_数据加强_整理版/'
 
 while True:
     
