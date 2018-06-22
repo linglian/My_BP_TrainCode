@@ -4,6 +4,9 @@ import os
 import sys
 import getopt
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 # 数据增强区
 from tools import data_augmentation
 from tools import run_tensorflow_get_feature
