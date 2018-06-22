@@ -18,6 +18,7 @@ def run_tidy(file_path, save_floder_path, file_format='.jpg'):
     global num
     from tools import file_tools
     def let_do_it(file_path):
+        global num
         file_name = file_tools.getFileName(file_path)
         class_name = file_tools.getFloderOfFile(file_path, 1)
         file_list = []
