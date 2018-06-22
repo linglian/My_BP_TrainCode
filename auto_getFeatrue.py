@@ -5,8 +5,8 @@ import sys
 import getopt
 
 # 数据增强区
-from My_BP_TrainCode import data_augmentation
-from My_BP_TrainCode import run_tensorflow_get_feature
+from tools import data_augmentation
+from tools import run_tensorflow_get_feature
 
 num = 0
 
