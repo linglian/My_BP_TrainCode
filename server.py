@@ -15,6 +15,9 @@ from PIL import Image
 import gc
 from sklearn.decomposition import PCA
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 import logging
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
