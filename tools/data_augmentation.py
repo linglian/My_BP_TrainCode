@@ -109,6 +109,7 @@ def getImage(img):
     img = img[np.newaxis, :]
     return img
 
+
 def splite_img(imgfile):
     global now_number
     import random
@@ -147,7 +148,7 @@ def start_splite(path, filePath, toPath):
     for folder in folders:
         start_splite(os.path.join(path, filePath), folder, os.path.join(toPath, filePath))
     
-    if now_number != 0:
+    if now_number % 10000 == 0:
         print '正在进行DataAugmentation(%d/%d)---%.2f张/sec' % (now_number, image_number, (float(now_number - last_number) / (time.time() - last_time)))
         last_number = now_number
         last_time = time.time()
