@@ -106,23 +106,19 @@ def getImage(img):
 def splite_img(imgfile):
     global now_number
     import random
-    try:
-        newname = imgfile.replace('.', '_{:03d}.'.format(0))
-        newname = newname.replace(mainFold, toFold)
-        if os.path.exists(newname[0: newname.find('.')] + '.jpg') is True:
-            return
+    newname = imgfile.replace('.', '_{:03d}.'.format(0))
+    newname = newname.replace(mainFold, toFold)
+    if os.path.exists(newname[0: newname.find('.')] + '.jpg') is True:
+        return
 
-        # 打开图片
-        img_array = getCrop(imgfile, is_rotate=is_rotate, is_center_crop=is_center_crop, mode=mode)
-        # 将图片增强tilesPerImage份
-        for idx, im in enumerate(img_array):
-            newname = imgfile.replace('.', '_{:03d}.'.format(idx))
-            newname = newname.replace(mainFold, toFold)
-            cv2.imwrite(newname[0: newname.find('.')] + '.jpg', im)
-        now_number += 1
-    except Exception as msg:
-        print('Bad Image: %s B %s ' % (imgfile, msg))
-        return None
+    # 打开图片
+    img_array = getCrop(imgfile, is_rotate=is_rotate, is_center_crop=is_center_crop, mode=mode)
+    # 将图片增强tilesPerImage份
+    for idx, im in enumerate(img_array):
+        newname = imgfile.replace('.', '_{:03d}.'.format(idx))
+        newname = newname.replace(mainFold, toFold)
+        cv2.imwrite(newname[0: newname.find('.')] + '.jpg', im)
+    now_number += 1
  
 def start_splite(path, filePath, toPath):
     global now_number, image_number, last_number, last_time
