@@ -112,7 +112,7 @@ def splite_img(imgfile):
     global now_number
     import random
     newname = imgfile.replace('.', '_{:03d}.'.format(0))
-    print newname
+    print newname, mainFold, toFold
     newname = newname.replace(mainFold, toFold)
     if os.path.exists(newname[0: newname.find('.')] + '.jpg') is True:
         return
