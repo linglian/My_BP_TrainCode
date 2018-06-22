@@ -28,6 +28,7 @@ last_number = 0
 last_time = time.time()
 
 def run(mf, tf):
+    global mainFold, toFold
     mainFold = mf
     toFold = tf
     if mainFold.endswith('/') and toFold.endswith('/'):
