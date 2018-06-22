@@ -5,10 +5,11 @@ import sys
 import getopt
 
 # 数据增强区
-from . import data_augmentation
-from . import run_tensorflow_get_feature
+from My_BP_TrainCode import data_augmentation
+from My_BP_TrainCode import run_tensorflow_get_feature
 
 num = 0
+
 # 数据整理
 def run_tidy(file_path, save_floder_path, file_format='.jpg'):
     from tools import file_tools
@@ -47,7 +48,6 @@ while True:
     if num is not 0:
         c = Client('/usr/local/server%d.temp' % 99, authkey=b'lee123456')
         # 将信息传送给服务端
-        c.send(['--train'])
+        c.send(['-r'])
         # 等待服务端处理结果
         ar = c.recv()
-        print ar
