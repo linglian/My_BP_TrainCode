@@ -76,7 +76,7 @@ network_fn(placeholder)
 
 saver = tf.train.Saver()
 
-gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.8)
+gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.3)
 sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) 
 
 saver.restore(sess, input_checkpoint)
@@ -193,7 +193,7 @@ def find_k_FeatureHash(model_path, image_file_path, k):
                 feature_list.extend(my_feature[find_list])
         return class_name_list, file_path_list, feature_list, featrue
     else:
-        return None, None
+        return None, None, None, None
 
 def getDistances(f, t, type=1):
     if type == 1:
@@ -311,6 +311,10 @@ def run_server(address, authkey):
         try:
             client= serv.accept()
             msg= make_work(client)
+            if msg == 'train': # 关闭监听
+                serv.close()
+                global is_need_init_find_k_FeatureHash
+                is_need_init_find_k_FeatureHash = True
             if msg == 'Close': # 关闭监听
                 serv.close()
                 return "Close"

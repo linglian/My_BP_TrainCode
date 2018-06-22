@@ -28,7 +28,6 @@ import imutils
 
 def use_tensorflow_get_feature(base_path, save_path):
     
-    
     checkpoint = tf.train.get_checkpoint_state('/home/lol/DeepLearn/Tensorflow-Ipynb/logs/')
 
     input_checkpoint = checkpoint.model_checkpoint_path
@@ -42,7 +41,8 @@ def use_tensorflow_get_feature(base_path, save_path):
 
     saver = tf.train.Saver()
 
-    sess = tf.Session()
+    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.3)
+    sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) 
 
     saver.restore(sess, input_checkpoint)
         
@@ -66,10 +66,11 @@ def use_tensorflow_get_feature(base_path, save_path):
     last_time = time.time()
     for class_name_and_path in class_name_and_path_list:
         image_path_list = [os.path.join(class_name_and_path[1], image_file) for image_file in os.listdir(class_name_and_path[1]) if image_file.endswith('.jpg')]
-        #print image_path_list
-        #if os.path.exists(os.path.join(class_name_and_path[1].replace(base_path, save_path), 'tensorflow-resnet-50_feature.npy')):
-        #    now_num = now_num + len(image_path_list)
-        #    continue
+        if os.path.exists(os.path.join(class_name_and_path[1].replace(base_path, save_path), 'tensorflow-resnet-50_feature.npy')):
+            t_npy = np.load(os.path.join(class_name_and_path[1].replace(base_path, save_path), 'tensorflow-resnet-50_feature.npy'))
+            if len(image_path_list) == len(image_path_list):
+                now_num = now_num + len(image_path_list)
+                continue
 
         feature_list = []
         all_image_list = []

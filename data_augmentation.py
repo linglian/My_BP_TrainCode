@@ -22,6 +22,12 @@ image_number = 0
 last_number = 0
 last_time = time.time()
 
+def run(mf, tf):
+    mainFold = mf
+    toFold = tf
+    if mainFold.endswith('/') and toFold.endswith('/'):
+        get_image_number(mainFold, '', toFold)
+        start_splite(mainFold, '', toFold)
 """创建文件夹（如果文件夹不存在的话）
 """
 
