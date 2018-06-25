@@ -112,5 +112,5 @@ def check_fold(name):
 
 def check_folder_name(name):
     if not name.endswith('/'):
-        name = name + '/'
+        name = name + '/' 
     return name 
