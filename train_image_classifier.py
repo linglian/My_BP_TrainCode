@@ -378,16 +378,13 @@ def _get_variables_to_train():
     variables_to_train.extend(variables)
   return variables_to_train
 
+
 def preprocessing(image):
-    resized_image = tf.expand_dims(image, 0)
-
-    resized_image = tf.squeeze(resized_image)
-
-    resized_image.set_shape([None, None, 3])
-
-    resized_image = tf.to_float(resized_image)
-    resized_image = tf.image.random_flip_left_right(resized_image)
+    
+    resized_image = tf.image.random_flip_left_right(image)
+    
     shape = tf.shape(resized_image)
+    
     shape = tf.to_float(shape)
 
     crop_height = tf.random_uniform([], minval= shape[0] * tf.convert_to_tensor(0.5),
@@ -417,12 +414,27 @@ def preprocessing(image):
     resized_image = tf.slice(resized_image, offsets, crop_shape)
 
     resized_image = tf.reshape(resized_image, crop_shape)
-
-    resized_image = tf.image.resize_bilinear(image, [224, 224],
+    
+    resized_image = tf.expand_dims(resized_image, 0)
+    
+    resized_image = tf.image.resize_bilinear(resized_image, [224, 224],
                                            align_corners=False)
     
     resized_image = tf.squeeze(resized_image)
     
+    resized_image.set_shape([None, None, 3])
+    
+    num_channels = resized_image.get_shape().as_list()[-1]
+
+    means = [123.68, 116.779, 103.939]
+ 
+    channels = tf.split(axis=2, num_or_size_splits=num_channels, value=resized_image)
+
+    for i in range(num_channels):
+        channels[i] -= means[i]
+
+    resized_image = tf.concat(axis=2, values=channels)
+
     resized_image.set_shape([None, None, 3])
     
     return resized_image
