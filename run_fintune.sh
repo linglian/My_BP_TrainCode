@@ -7,7 +7,7 @@ cd $MODELS_PATH
 python train_image_classifier.py \
     --train_dir=${TRAIN_DIR}/logs \
     --dataset_dir=${TRAIN_DIR} \
-    --num_samples=481448 \
+    --num_samples=43769 \
     --num_classes=100000 \
     --model_name=resnet_v1_50 \
     --checkpoint_path=/home/slu/tasks/resnet_v1_50.ckpt \
