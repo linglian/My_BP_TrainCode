@@ -22,7 +22,7 @@ from __future__ import print_function
 
 import tensorflow as tf
 
-from datasets import dataset_factory
+from datasets import dataset_classification
 from deployment import model_deploy
 from nets import nets_factory
 from preprocessing import preprocessing_factory
@@ -221,6 +221,13 @@ tf.app.flags.DEFINE_string(
 tf.app.flags.DEFINE_boolean(
     'ignore_missing_vars', False,
     'When restoring a checkpoint would ignore missing variables.')
+
+tf.app.flags.DEFINE_integer(
+    'num_samples', 1781, 'Number of samples.')
+tf.app.flags.DEFINE_integer(
+    'num_classes', 3, 'Number of classes.')
+tf.app.flags.DEFINE_string(
+    'labels_to_names_path', None, 'Label names file path.')
 
 FLAGS = tf.app.flags.FLAGS
 
@@ -481,8 +488,8 @@ def main(_):
     ######################
     # Select the dataset #
     ######################
-    dataset = dataset_factory.get_dataset(
-        FLAGS.dataset_name, FLAGS.dataset_split_name, FLAGS.dataset_dir)
+    dataset = dataset_classification.get_dataset(
+        FLAGS.dataset_dir, FLAGS.num_samples, FLAGS.num_classes, FLAGS.labels_to_names_path)
 
     ######################
     # Select the network #
@@ -512,7 +519,7 @@ def main(_):
 
       train_image_size = FLAGS.train_image_size or network_fn.default_image_size
 
-      image = image_preprocessing_fn(image)
+      image = image_preprocessing_fn(image\)
 
       images, labels = tf.train.batch(
           [image, label],
