@@ -84,7 +84,7 @@ sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
 
 saver.restore(sess, input_checkpoint)
     
-image_preprocessing_fn = preprocessing_factory.get_preprocessing('resnet_v1_50', is_training=False)
+image_preprocessing_fn = preprocessing_factory.get_preprocessing('resnet_v1_50', is_training=True)
 
 img_pla = tf.placeholder(dtype=tf.float32, shape=[None, None, 3], name='img')
 
