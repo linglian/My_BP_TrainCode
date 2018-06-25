@@ -1,5 +1,5 @@
 MODELS_PATH="/home/slu/tasks/models_02/research/slim"
-TRAIN_DIR="/www/clothes_train_tf"
+TRAIN_DIR="/www/linglian_test_data"
 
 
 cd $MODELS_PATH
