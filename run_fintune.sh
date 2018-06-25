@@ -3,7 +3,7 @@ TRAIN_DIR="/www/linglian_test_data"
 
 
 cd $MODELS_PATH
-
+ 
 python train_image_classifier.py \
     --train_dir=${TRAIN_DIR}/logs \
     --dataset_dir=${TRAIN_DIR} \
