@@ -1,9 +1,8 @@
-MODELS_PATH="/home/slu/tasks/models_02/research/slim"
-TRAIN_DIR="/www/linglian_test_data"
-
+MODELS_PATH="/home/lee/DeepLearn/models/research/slim"
+TRAIN_DIR="/media/lee/data/macropic/newp/train_tf"
 
 cd $MODELS_PATH
- 
+
 python train_image_classifier.py \
     --train_dir=${TRAIN_DIR}/logs \
     --dataset_dir=${TRAIN_DIR} \
