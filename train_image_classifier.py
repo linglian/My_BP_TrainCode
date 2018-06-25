@@ -195,6 +195,9 @@ tf.app.flags.DEFINE_integer(
 tf.app.flags.DEFINE_integer('max_number_of_steps', None,
                             'The maximum number of training steps.')
 
+tf.app.flags.DEFINE_bool('is_color_jitter', False,
+                            'Defualt is False')
+
 #####################
 # Fine-Tuning Flags #
 #####################
@@ -379,7 +382,7 @@ def _get_variables_to_train():
   return variables_to_train
 
 
-def preprocessing(image):
+def preprocessing(image, is_color_jitter=False):
     
     resized_image = tf.image.random_flip_left_right(image)
     
@@ -387,6 +390,7 @@ def preprocessing(image):
     
     shape = tf.to_float(shape)
 
+    # 获取截取大小
     crop_height = tf.random_uniform([], minval= shape[0] * tf.convert_to_tensor(0.5),
                                              maxval=shape[0], dtype=tf.float32)
 
@@ -400,6 +404,7 @@ def preprocessing(image):
 
     crop_shape = tf.stack([crop_height, crop_width, shape[2]])
 
+    # 获取截取开始坐标
     max_offset_height = tf.reshape(shape[0] - crop_height + 1, [])
     max_offset_width = tf.reshape(shape[1] - crop_width + 1, [])
 
@@ -415,6 +420,7 @@ def preprocessing(image):
 
     resized_image = tf.reshape(resized_image, crop_shape)
     
+    # 调整至标准大小
     resized_image = tf.expand_dims(resized_image, 0)
     
     resized_image = tf.image.resize_bilinear(resized_image, [224, 224],
@@ -424,10 +430,21 @@ def preprocessing(image):
     
     resized_image.set_shape([None, None, 3])
     
+    # 色彩抖动（RGB）
+    if FLAGS.is_color_jitter:
+        channels = tf.split(axis=2, num_or_size_splits=3, value=resized_image)
+
+        for i in range(3):
+            channels[i] = channels[i] - tf.random_uniform([], minval=0, maxval=256, dtype=tf.float32)
+
+        resized_image = tf.abs(tf.concat(axis=2, values=channels))
+
+
+    # 减去均值
     num_channels = resized_image.get_shape().as_list()[-1]
 
     means = [123.68, 116.779, 103.939]
- 
+
     channels = tf.split(axis=2, num_or_size_splits=num_channels, value=resized_image)
 
     for i in range(num_channels):
