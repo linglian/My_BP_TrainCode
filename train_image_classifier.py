@@ -437,7 +437,7 @@ def preprocessing(image, is_color_jitter=False):
     
     resized_image = tf.squeeze(resized_image)
     
-    resized_image.set_shape([None, None, 3])
+    resized_image.set_shape([224, 224, 3])
     
     # 色彩抖动（RGB）
     if FLAGS.is_color_jitter:
@@ -461,7 +461,7 @@ def preprocessing(image, is_color_jitter=False):
 
     resized_image = tf.concat(axis=2, values=channels)
 
-    resized_image.set_shape([None, None, 3])
+    resized_image.set_shape([224, 224, 3])
     
     return resized_image
 
