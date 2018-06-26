@@ -9,7 +9,7 @@ python train_image_classifier.py \
     --dataset_split_name=list_tfrecord \
     --num_samples=43769 \
     --num_classes=100000 \
-    --batch_size=256 \
+    --batch_size=8 \
     --model_name=resnet_v1_50 \
     --checkpoint_exclude_scopes=resnet_v1_50/logits \
     --learning_rate=0.01
