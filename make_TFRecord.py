@@ -24,29 +24,6 @@ def make_TFRecord(list_file_path, tfrecord_file_path=None):
 
     tfrecord_writer = tf.python_io.TFRecordWriter(tfrecord_file_path)
 
-    def change_size(image):
-        smallest_side = tf.convert_to_tensor(512, dtype=tf.int32)
-
-        shape = tf.shape(image)
-        height = shape[0]
-        width = shape[1]
-
-        height = tf.to_float(height)
-        width = tf.to_float(width)
-        smallest_side = tf.to_float(smallest_side)
-
-        scale = tf.cond(tf.greater(height, width),
-                        lambda: smallest_side / width,
-                        lambda: smallest_side / height)
-        new_height = tf.to_int32(tf.rint(height * scale))
-        new_width = tf.to_int32(tf.rint(width * scale))
-        image = tf.expand_dims(image, 0)
-        resized_image = tf.image.resize_bilinear(image, [new_height, new_width],
-                                                align_corners=False)
-        resized_image = tf.squeeze(resized_image)
-        resized_image.set_shape([None, None, 3])
-        return new_height, new_width, resized_image
-
     last_time = time.time()
     with tf.Graph().as_default():
         # 读取格式信息
@@ -66,9 +43,7 @@ def make_TFRecord(list_file_path, tfrecord_file_path=None):
                 if line[1].isdigit():
                     image_data = tf.gfile.FastGFile(line[0], 'rb').read()
                     image = sess.run(decode_jpeg, feed_dict={decode_jpeg_data: image_data})
-                    
-                    height, width, image = change_size(decode_jpeg)
-                    image = sess.run(image, feed_dict={decode_jpeg_data: image_data})
+                    height, width = image.shape[0], image.shape[1]
                     example = dataset_utils.image_to_tfexample(
                         image_data, b'jpg', height, width, int(line[1]))
                     tfrecord_writer.write(example.SerializeToString())
