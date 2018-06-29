@@ -28,7 +28,7 @@ def change_format(image_path):
         file_tools.check_fold(file_tools.getFloderOfFileJustPath(image_path))
         img = cv2.imread(nature_image_path)
         if img is not None:
-            img = Image.fromarray(imutils.opencv2matplotlib(cv2.resize(img, (512, 512))))
+            img = Image.fromarray(imutils.opencv2matplotlib(cv2.resize(img, (1024, 1024))))
             img.save(image_path)
         else:
             if os.path.exists(nature_image_path) is False:
