@@ -13,6 +13,6 @@ python train_image_classifier.py \
     --model_name=resnet_v1_50 \
     --checkpoint_exclude_scopes=resnet_v1_50/logits \
     --learning_rate=0.0001 \
-    --num_readers=8 \
-    --num_preprocessing_threads=8 \
+    --num_readers=28 \
+    --num_preprocessing_threads=28 \
     --clone_on_cpu=True
