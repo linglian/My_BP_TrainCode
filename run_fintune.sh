@@ -9,10 +9,11 @@ python train_image_classifier.py \
     --dataset_split_name=list_tfrecord \
     --num_samples=43769 \
     --num_classes=100000 \
-    --batch_size=256 \
+    --batch_size=32 \
     --model_name=resnet_v1_50 \
     --checkpoint_exclude_scopes=resnet_v1_50/logits \
     --learning_rate=0.0001 \
-    --num_readers=28 \
-    --num_preprocessing_threads=28 \
-    --clone_on_cpu=True
+    --num_readers=16 \
+    --num_preprocessing_threads=16 \
+    --num_clones=4 \
+    --worker_replicas=4 
