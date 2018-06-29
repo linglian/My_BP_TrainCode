@@ -8,7 +8,7 @@ tf.logging.set_verbosity(tf.logging.INFO)
 import tensorflow as tf
 import sys
 from tensorflow.contrib import slim
-sys.path.insert(0, '/home/lee/DeepLearn/models/research/slim/')
+sys.path.insert(0, '/home/slu/tasks/models/research/slim/')
 from nets import nets_factory
 from datasets import dataset_classification
 from preprocessing import preprocessing_factory
