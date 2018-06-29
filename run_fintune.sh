@@ -15,5 +15,4 @@ python train_image_classifier.py \
     --learning_rate=0.0001 \
     --num_readers=16 \
     --num_preprocessing_threads=16 \
-    --num_clones=4 \
-    --worker_replicas=4 
+    --num_clones=4
