@@ -179,9 +179,9 @@ def main(_):
     tf.logging.info('Evaluating %s' % checkpoint_path)
 
     slim.evaluation.evaluate_once(
-        FLAGS.master,
-        checkpoint_path,
-        FLAGS.eval_dir,
+        master=FLAGS.master,
+        checkpoint_path=checkpoint_path,
+        logdir=FLAGS.eval_dir,
         num_evals=num_batches,
         eval_op=list(names_to_updates.values()),
         variables_to_restore=variables_to_restore)
