@@ -91,7 +91,7 @@ FLAGS = tf.app.flags.FLAGS
 
 def preprocessing(image, is_color_jitter=False):
     # 调整至标准大小
-    resized_image = tf.expand_dims(resized_image, 0)
+    resized_image = tf.expand_dims(image, 0)
     
     resized_image = tf.image.resize_bilinear(resized_image, [224, 224],
                                            align_corners=False)
