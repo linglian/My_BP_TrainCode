@@ -21,7 +21,7 @@ from __future__ import print_function
 import math
 import tensorflow as tf
 
-from datasets import dataset_factory
+from datasets import dataset_classification
 from nets import nets_factory
 from preprocessing import preprocessing_factory
 
@@ -79,8 +79,42 @@ tf.app.flags.DEFINE_float(
 tf.app.flags.DEFINE_integer(
     'eval_image_size', None, 'Eval image size')
 
+tf.app.flags.DEFINE_integer(
+    'num_samples', 1781, 'Number of samples.')
+tf.app.flags.DEFINE_integer(
+    'num_classes', 3, 'Number of classes.')
+tf.app.flags.DEFINE_string(
+    'labels_to_names_path', None, 'Label names file path.')
+
 FLAGS = tf.app.flags.FLAGS
 
+
+def preprocessing(image, is_color_jitter=False):
+    # 调整至标准大小
+    resized_image = tf.expand_dims(resized_image, 0)
+    
+    resized_image = tf.image.resize_bilinear(resized_image, [224, 224],
+                                           align_corners=False)
+    
+    resized_image = tf.squeeze(resized_image)
+    
+    resized_image.set_shape([224, 224, 3])
+
+    # 减去均值
+    num_channels = resized_image.get_shape().as_list()[-1]
+
+    means = [123.68, 116.779, 103.939]
+
+    channels = tf.split(axis=2, num_or_size_splits=num_channels, value=resized_image)
+
+    for i in range(num_channels):
+        channels[i] -= means[i]
+
+    resized_image = tf.concat(axis=2, values=channels)
+
+    resized_image.set_shape([224, 224, 3])
+    
+    return resized_image
 
 def main(_):
   if not FLAGS.dataset_dir:
@@ -93,8 +127,9 @@ def main(_):
     ######################
     # Select the dataset #
     ######################
-    dataset = dataset_factory.get_dataset(
-        FLAGS.dataset_name, FLAGS.dataset_split_name, FLAGS.dataset_dir)
+    dataset = dataset_classification.get_dataset(
+        FLAGS.dataset_dir, FLAGS.num_samples, FLAGS.num_classes, FLAGS.labels_to_names_path)
+
 
     ####################
     # Select the model #
@@ -118,14 +153,11 @@ def main(_):
     #####################################
     # Select the preprocessing function #
     #####################################
-    preprocessing_name = FLAGS.preprocessing_name or FLAGS.model_name
-    image_preprocessing_fn = preprocessing_factory.get_preprocessing(
-        preprocessing_name,
-        is_training=False)
+    image_preprocessing_fn = preprocessing
 
     eval_image_size = FLAGS.eval_image_size or network_fn.default_image_size
 
-    image = image_preprocessing_fn(image, eval_image_size, eval_image_size)
+    image = image_preprocessing_fn(image)
 
     images, labels = tf.train.batch(
         [image, label],
