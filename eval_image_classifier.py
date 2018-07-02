@@ -178,7 +178,7 @@ def main(_):
 
     tf.logging.info('Evaluating %s' % checkpoint_path)
 
-    slim.evaluation.evaluation_loop(
+    slim.evaluation.evaluate_loop(
         FLAGS.master,
         checkpoint_path,
         FLAGS.eval_dir,
